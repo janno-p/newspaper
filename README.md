@@ -6,6 +6,7 @@ IDU00200 (2014) Vaheülesanne: Veebirakenduse osade vaheline tööjaotus ja DAO-
 ## Ülesande sisu ##
 
 1. Rakenduse põhifunktsionaalsus
+
     * 4 pöördumist
         | URL path | HTTP request type | Mida teeb? |
         | --- | --- | --- |

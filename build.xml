@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<project name="Newspaper" default="run-tests">
+  <target name="run-tests">
+    <junit printsummary="yes" haltonfailure="yes">
+      <classpath>
+        <pathelement location="${basedir}/build/classes" />
+      </classpath>
+      <formatter type="plain" usefile="false" />
+      <test name="ee.ttu.ld.imbi.newspaper.test.NewspaperDaoTest" haltonfailure="no" />
+    </junit>
+  </target>
+</project>

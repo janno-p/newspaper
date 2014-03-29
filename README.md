@@ -6,16 +6,13 @@ IDU00200 (2014) Vaheülesanne: Veebirakenduse osade vaheline tööjaotus ja DAO-
 ## Ülesande sisu ##
 
 1. Rakenduse põhifunktsionaalsus
-
     * 4 pöördumist
-
         | URL path | HTTP request type | Mida teeb? |
         | --- | --- | --- |
         | /newspaper/s | GET | Näitab kõiki andmebaasi tabelist võetud objekte. |
         | /newspaper/s?id=1 | GET | Näitab sisendparameetri "id" alusel andmebaasist võetud ühe andmeobjekti andmeid andmete muutmist võimaldaval HTML vormil |
         | /newspaper/s?action=save | POST | Salvestab HTML-vormist saadetud andmed andmebaasis (olemasoleva kirje muutmine). Kui HTML vormile sisestatud andmed on ebakorrektsed, siis näitab vormi uuesti koos vigaste andmetega, aga andmebaasi midagi ei salvesta. Näitab kasutajale vormi välja täpsusega, kus tehti viga. |
         | /newspaperservice?id=1&amp;tm=&lt;timestamp&gt;; | GET | Näitab sisendparameetri "id" alusel andmebaasist võetud ühe andmeobjekti "kirjelduse"-nimelise välja sisu andmebaasist võetud objektide tabeli all. Veebiteenus, mille poole pöördub AJAX-i päring. |
-
     * 2 servletti
     * 1 "Data Access Object" ehk DAO-klass
     * 1 Java klass andmeobjektide jaoks

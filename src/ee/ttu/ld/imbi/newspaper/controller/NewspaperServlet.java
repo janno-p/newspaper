@@ -9,14 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ee.ttu.ld.imbi.newspaper.db.NewspaperDao;
+import ee.ttu.ld.imbi.newspaper.model.Newspaper;
 
 @WebServlet("/s")
 public class NewspaperServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
     private final NewspaperDao newspaperDao = new NewspaperDao();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Newspaper[] newspapers = newspaperDao.findAll();
+        request.setAttribute("newspapers", newspapers);
+        getServletConfig().getServletContext().getRequestDispatcher("/Newspaper.jsp").forward(request, response);
     }
 
     @Override

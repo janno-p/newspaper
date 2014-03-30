@@ -4,11 +4,12 @@
 
   <target name="init" description="Süsteemi parameetrite algväärtustamine">
     <property environment="ENV" />
-    <property name="src-jsp.dir" value="src/jsp" />
-    <property name="src-static.dir" value="src/static" />
-    <property name="src-web-inf.dir" value="src/WEB-INF" />
-    <property name="src.dir" value="src/rakarh1" />
-    <property name="prop.dir" value="src/properties" />
+    <property name="src-jsp.dir" value="WebContent" />
+    <property name="src-static.dir" value="WebContent/static" />
+    <property name="src-js.dir" value="WebContent/js" />
+    <property name="src-web-inf.dir" value="WebContent/WEB-INF" />
+    <property name="src.dir" value="src/ee" />
+    <property name="prop.dir" value="src" />
     <property name="web-inf.dir" value="WEB-INF" />
     <property name="classes.dir" value="WEB-INF/classes" />
     <property name="tomcat.server.lib" value="/usr/share/tomcat7/lib" />
@@ -16,6 +17,7 @@
     <path id="lib.classpath">
       <fileset dir="${tomcat.server.lib}" includes="*.jar" />
       <fileset dir="${ant.home.lib}" includes="*.jar" />
+      <fileset dir="${src-web-inf.dir}/lib" includes="*.jar" />
     </path>
   </target>
   
@@ -26,6 +28,7 @@
   
   <target name="prepare" depends="clean" description="Ettevalmistused">
     <mkdir dir="${classes.dir}" />
+    <mkdir dir="${web-inf.dir}/lib" />
   </target>
   
   <target name="compile" depends="prepare" description="Kompileerib ja asetab tulemuse vahekataloogi">
@@ -33,12 +36,16 @@
     <copy todir="${classes.dir}">
       <fileset dir="${prop.dir}" includes="**/*.properties" />
     </copy>
+    <copy todir="${web-inf.dir}/lib">
+      <fileset dir="${src-web-inf.dir}/lib" includes="*.jar" />
+    </copy>
   </target>
 
   <target name="war" depends="compile" description="Kopeerib kompileeritud klassid ja staatilised failid kokku üheks war-failiks">
     <war destfile="${application-name}.war" webxml="${src-web-inf.dir}/web.xml">
-      <fileset dir="${src-jsp.dir}" />
+      <fileset dir="${src-jsp.dir}" includes="*.jsp" />
       <zipfileset dir="${src-static.dir}" prefix="static" />
+      <zipfileset dir="${src-js.dir}" prefix="js" />
       <classes dir="${classes.dir}" />
     </war>
   </target>
@@ -54,10 +61,12 @@
   <target name="run-tests" depends="compile" description="Unit testide jooksutamine">
     <junit printsummary="yes" haltonfailure="yes">
       <classpath>
+        <pathelement location="${web-inf.dir}/lib/log4j-1.2.17.jar" />
         <pathelement location="${classes.dir}" />
       </classpath>
       <formatter type="plain" usefile="false" />
       <test name="ee.ttu.ld.imbi.newspaper.test.NewspaperDaoTest" haltonfailure="no" />
+      <sysproperty key="log4j.configuration" value="" />
     </junit>
   </target>
 </project>

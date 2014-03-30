@@ -9,9 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import ee.ttu.ld.imbi.newspaper.model.Newspaper;
 
 public class NewspaperDao {
+    private static final Logger logger = Logger.getLogger(NewspaperDao.class);
+
     private final String connectionString;
     private final String username;
     private final String password;
@@ -21,7 +25,7 @@ public class NewspaperDao {
         try {
             properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("Database.properties"));
         } catch (Exception exception) {
-            System.err.println("NewspaperDao(): " + exception.getMessage());
+            logger.error("NewspaperDao()", exception);
         }
         connectionString = properties.getProperty("connectionString");
         username = properties.getProperty("username");
@@ -47,7 +51,7 @@ public class NewspaperDao {
                 statement.executeUpdate();
             }
         } catch (Exception exception) {
-            System.err.println("NewspaperDao.update(" + newspaper.getId() + "): " + exception.getMessage());
+            logger.error("NewspaperDao.update(" + newspaper.getId() + ")", exception);
         } finally {
             closeStatement(statement);
             closeConnection(connection);
@@ -71,7 +75,7 @@ public class NewspaperDao {
                 }
             }
         } catch (Exception exception) {
-            System.err.println("NewspaperDao.findById(" + id + "): " + exception.getMessage());
+            logger.error("NewspaperDao.findById(" + id + ")", exception);
         } finally {
             closeResultSet(resultSet);
             closeStatement(statement);
@@ -100,7 +104,7 @@ public class NewspaperDao {
                 return newspapers.toArray(new Newspaper[newspapers.size()]);
             }
         } catch (Exception exception) {
-            System.err.println("NewspaperDao.findAll(): " + exception.getMessage());
+            logger.error("NewspaperDao.findAll()", exception);
         } finally {
             closeResultSet(resultSet);
             closeStatement(statement);
@@ -124,7 +128,7 @@ public class NewspaperDao {
             Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(connectionString, username, password);
         } catch (Exception exception) {
-            System.err.println("NewspaperDao.createConnection(): " + exception.getMessage());
+            logger.error("NewspaperDao.createConnection()", exception);
             return null;
         }
     }
@@ -134,7 +138,7 @@ public class NewspaperDao {
             try {
                 connection.close();
             } catch (Exception exception) {
-                System.err.println("NewspaperDao.closeConnection(): " + exception.getMessage());
+                logger.error("NewspaperDao.closeConnection()", exception);
             }
         }
     }
@@ -144,7 +148,7 @@ public class NewspaperDao {
             try {
                 statement.close();
             } catch (Exception exception) {
-                System.err.println("NewspaperDao.closeStatement(): " + exception.getMessage());
+                logger.error("NewspaperDao.closeStatement()", exception);
             }
         }
     }
@@ -154,7 +158,7 @@ public class NewspaperDao {
             try {
                 resultSet.close();
             } catch (Exception exception) {
-                System.err.println("NewspaperDao.closeResultSet(): " + exception.getMessage());
+                logger.error("NewspaperDao.closeResultSet()", exception);
             }
         }
     }

@@ -4,6 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <t:genericpage>
     <jsp:attribute name="title">Ajalehtede nimekiri</jsp:attribute>
+    <jsp:attribute name="customjavascript">
+        <script src="js/newspapers.js"></script>
+    </jsp:attribute>
     <jsp:body>
         <c:choose>
         <c:when test="${not empty newspapers}">
@@ -23,7 +26,7 @@
                     <td><c:out value="${newspaper.id}" /></td>
                     <td><c:out value="${newspaper.name}" /></td>
                     <td><fmt:formatDate pattern="dd.MM.yyyy" value="${newspaper.foundedAt}" /></td>
-                    <td><a href="#">Kirjeldus</a></td>
+                    <td><a href="#" class="newspaper-description" data-id="<c:out value="${newspaper.id}" />">Kirjeldus</a></td>
                     <td><a href="s?id=<c:out value="${newspaper.id}" />">Muuda</a></td>
                 </tr>
                 </c:forEach>

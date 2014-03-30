@@ -1,5 +1,6 @@
 <%@ tag description="Main page template" pageEncoding="UTF-8"%>
 <%@ attribute name="title" fragment="true" %>
+<%@ attribute name="customjavascript" fragment="true" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -21,7 +22,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="row">
+            <div class="row" id="content-holder">
                 <ol class="breadcrumb">
                     <li><a href="s">Servlet</a></li>
                     <li><a href="log.txt">Logi</a></li>
@@ -38,5 +39,7 @@
 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        
+        <jsp:invoke fragment="customjavascript" />
     </body>
 </html>

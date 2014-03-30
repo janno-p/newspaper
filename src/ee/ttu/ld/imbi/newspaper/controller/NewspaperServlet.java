@@ -29,7 +29,7 @@ public class NewspaperServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("NewspaperServlet.doGet(): " + request.getRequestURI() + "?" + request.getQueryString());
+        logger.info("NewspaperServlet.doGet(): " + StringUtil.getFullURI(request));
 
         if (!request.getParameterMap().containsKey("id")) {
             Newspaper[] newspapers = newspaperDao.findAll();
@@ -55,7 +55,7 @@ public class NewspaperServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        logger.info("NewspaperServlet.doPost(): " + request.getRequestURI() + "?" + request.getQueryString());
+        logger.info("NewspaperServlet.doPost(): " + StringUtil.getFullURI(request));
 
         NewspaperForm form = new NewspaperForm(request);
         NewspaperValidator validator = new NewspaperValidator(form);

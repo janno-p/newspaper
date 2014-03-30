@@ -1,9 +1,60 @@
 <?xml version="1.0"?>
-<project name="Newspaper" default="run-tests">
-  <target name="run-tests">
+<project name="newspaper" default="run-tests" basedir=".">
+  <property name="application-name" value="newspaper" />
+
+  <target name="init" description="Süsteemi parameetrite algväärtustamine">
+    <property environment="ENV" />
+    <property name="src-jsp.dir" value="src/jsp" />
+    <property name="src-static.dir" value="src/static" />
+    <property name="src-web-inf.dir" value="src/WEB-INF" />
+    <property name="src.dir" value="src/rakarh1" />
+    <property name="prop.dir" value="src/properties" />
+    <property name="web-inf.dir" value="WEB-INF" />
+    <property name="classes.dir" value="WEB-INF/classes" />
+    <property name="tomcat.server.lib" value="/usr/share/tomcat7/lib" />
+    <property name="ant.home.lib" value="/usr/share/ant/lib" />
+    <path id="lib.classpath">
+      <fileset dir="${tomcat.server.lib}" includes="*.jar" />
+      <fileset dir="${ant.home.lib}" includes="*.jar" />
+    </path>
+  </target>
+  
+  <target name="clean" depends="init" description="Kustutab kompileeritud klassid">
+    <delete dir="${classes.dir}" />
+    <delete dir="${web-inf.dir}" />
+  </target>
+  
+  <target name="prepare" depends="clean" description="Ettevalmistused">
+    <mkdir dir="${classes.dir}" />
+  </target>
+  
+  <target name="compile" depends="prepare" description="Kompileerib ja asetab tulemuse vahekataloogi">
+    <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="lib.classpath" />
+    <copy todir="${classes.dir}">
+      <fileset dir="${prop.dir}" includes="**/*.properties" />
+    </copy>
+  </target>
+
+  <target name="war" depends="compile" description="Kopeerib kompileeritud klassid ja staatilised failid kokku üheks war-failiks">
+    <war destfile="${application-name}.war" webxml="${src-web-inf.dir}/web.xml">
+      <fileset dir="${src-jsp.dir}" />
+      <zipfileset dir="${src-static.dir}" prefix="static" />
+      <classes dir="${classes.dir}" />
+    </war>
+  </target>
+
+  <target name="deploy_war_local" depends="war" description="Kopeerib war-faili lokaalarvuti Tomcat-i /webapps kataloogi">
+    <copy todir="webapps" overwrite="true">
+      <fileset dir="." includes="*.war" />
+    </copy>
+    <delete dir="${classes.dir}" />
+    <delete dir="${web-inf.dir}" />
+  </target>
+  
+  <target name="run-tests" depends="compile" description="Unit testide jooksutamine">
     <junit printsummary="yes" haltonfailure="yes">
       <classpath>
-        <pathelement location="${basedir}/build/classes" />
+        <pathelement location="${classes.dir}" />
       </classpath>
       <formatter type="plain" usefile="false" />
       <test name="ee.ttu.ld.imbi.newspaper.test.NewspaperDaoTest" haltonfailure="no" />

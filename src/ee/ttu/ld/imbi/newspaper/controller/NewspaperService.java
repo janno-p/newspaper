@@ -27,7 +27,7 @@ public class NewspaperService extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("NewspaperService.doGet(): " + request.getRequestURI() + "?" + request.getQueryString());
+        logger.info("NewspaperService.doGet(): " + StringUtil.getFullURI(request));
 
         int newspaperId = StringUtil.parseId(request.getParameter("id"));
         Newspaper newspaper = newspaperDao.findById(newspaperId);
